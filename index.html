@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Life Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Settings</h2>
+        <button class="modal-close" id="closeSettings" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-group">
+          <label class="setting-label">Your Name</label>
+          <input type="text" class="setting-input" id="nameInput" placeholder="Enter your name…" maxlength="30" />
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Pomodoro Duration (minutes)</label>
+          <div class="setting-row">
+            <input type="number" class="setting-input setting-input--short" id="pomodoroInput" min="1" max="120" value="25" />
+            <span class="setting-hint">1 – 120 min</span>
+          </div>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Appearance</label>
+          <div class="theme-toggle-wrap">
+            <button class="theme-btn" id="themeDark" data-val="dark">🌙 Dark</button>
+            <button class="theme-btn" id="themeLight" data-val="light">☀️ Light</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn--primary" id="saveSettings">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add / Edit Link Modal -->
+  <div class="modal-overlay" id="linkModal">
+    <div class="modal modal--sm">
+      <div class="modal-header">
+        <h2 class="modal-title" id="linkModalTitle">Add Quick Link</h2>
+        <button class="modal-close" id="closeLinkModal" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-group">
+          <label class="setting-label">Label</label>
+          <input type="text" class="setting-input" id="linkLabelInput" placeholder="e.g. GitHub" maxlength="20" />
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">URL</label>
+          <input type="url" class="setting-input" id="linkUrlInput" placeholder="https://…" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn--primary" id="saveLinkBtn">Save Link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Shell -->
+  <div class="app">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="topbar__logo">LIFE<span>BOARD</span></div>
+      <button class="icon-btn" id="openSettings" title="Settings" aria-label="Open Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Main grid -->
+    <main class="grid">
+
+      <!-- GREETING -->
+      <section class="card card--greeting" id="greetingCard">
+        <div class="greeting__time" id="clockDisplay">00:00:00</div>
+        <div class="greeting__date" id="dateDisplay">Monday, 1 January 2025</div>
+        <h1 class="greeting__text" id="greetingText">Good morning</h1>
+      </section>
+
+      <!-- FOCUS TIMER -->
+      <section class="card card--timer">
+        <div class="card__header">
+          <span class="card__label">Focus Timer</span>
+          <span class="timer__badge" id="timerBadge">Pomodoro</span>
+        </div>
+        <div class="timer__ring-wrap">
+          <svg class="timer__ring" viewBox="0 0 200 200" aria-hidden="true">
+            <circle class="timer__ring-bg" cx="100" cy="100" r="88"/>
+            <circle class="timer__ring-progress" id="timerRingProgress" cx="100" cy="100" r="88"
+              stroke-dasharray="552.9" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer__face">
+            <span class="timer__display" id="timerDisplay">25:00</span>
+            <span class="timer__label" id="timerStateLabel">Ready</span>
+          </div>
+        </div>
+        <div class="timer__controls">
+          <button class="btn btn--ghost" id="resetTimer" title="Reset">↺ Reset</button>
+          <button class="btn btn--primary btn--lg" id="startStopTimer">▶ Start</button>
+        </div>
+      </section>
+
+      <!-- TO-DO LIST -->
+      <section class="card card--todo">
+        <div class="card__header">
+          <span class="card__label">Tasks</span>
+          <span class="todo__count" id="todoCount">0 left</span>
+        </div>
+        <div class="todo__input-row">
+          <input type="text" class="todo__input" id="taskInput" placeholder="Add a new task…" maxlength="80" />
+          <button class="btn btn--primary" id="addTaskBtn">Add</button>
+        </div>
+        <ul class="todo__list" id="taskList" aria-label="Task list"></ul>
+        <div class="todo__footer" id="todoFooter">
+          <span id="completedCount">0 done</span>
+          <button class="btn--link" id="clearDoneBtn">Clear done</button>
+        </div>
+      </section>
+
+      <!-- QUICK LINKS -->
+      <section class="card card--links">
+        <div class="card__header">
+          <span class="card__label">Quick Links</span>
+          <button class="icon-btn icon-btn--sm" id="addLinkBtn" title="Add link" aria-label="Add link">＋</button>
+        </div>
+        <div class="links__grid" id="linksGrid"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
